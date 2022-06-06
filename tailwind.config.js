@@ -5,6 +5,7 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
+      transparent: 'transparent',
       'white': '#ffffff',
       'card': '#302938',
       'card-secondary': '#9089F0',
@@ -13,6 +14,8 @@ module.exports = {
       'placeholder': '#383140',
       'primary': '#CFC7D7',
       'secondary': '#9089F0',
+      'notification': '#be123c',
+      'wrongInput': '#e11d48'
     }
   },
   plugins: [],

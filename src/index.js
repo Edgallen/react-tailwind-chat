@@ -1,36 +1,32 @@
-import React, {createContext} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App/App';
 import './index.css'
+import { configureStore } from "@reduxjs/toolkit";
+import { compose } from 'redux';
+import { rootReducer } from './services/reducers';
+import { Provider } from 'react-redux';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from "firebase/auth";
+import { firebaseConfig } from './config/firebaseConfig';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyByBo7z_AqEv9v3TA-Aon4RPrU0XxNdgTs",
-    authDomain: "tailwind-react-chat.firebaseapp.com",
-    projectId: "tailwind-react-chat",
-    storageBucket: "tailwind-react-chat.appspot.com",
-    messagingSenderId: "1051637642113",
-    appId: "1:1051637642113:web:a643f270ddddb24d062e80",
-    measurementId: "G-0GCN661HR6"
-};
+const composeEnhancers =
+    // @ts-ignore
+    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        // @ts-ignore
+        ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+        : compose;
 
-export const Context = createContext(null);
+const store = configureStore({
+  reducer: rootReducer
+});
 
-const app = initializeApp(firebaseConfig);
-const dataBase = getFirestore();
-const auth = getAuth();
+initializeApp(firebaseConfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Context.Provider value={{
-        app,
-        dataBase,
-        auth
-    }}>
-        <App />
-    </Context.Provider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
