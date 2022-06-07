@@ -1,39 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     getAuth,
     createUserWithEmailAndPassword
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { showNotification } from '../services/actions/notification';
-import { useSelector } from 'react-redux/es/exports';
+import { useDispatch, useSelector } from 'react-redux';
 import Notification from '../components/Notification/Notification';
+import {
+    showEmailError,
+    showPasswordError,
+    hideEmailError,
+    hidePasswordError
+} from '../services/actions/auth';
+import { showNotification, hideNotification } from '../services/actions/notification';
 
 export const Register = () => {
-    const notification = useSelector(store => store.notification.notification);
-    const [ inputs, setInputs ] = useState({
-        email: '',
-        password: '',
-        wrongEmail: {
-            state: false,
-            message: ''
-        },
-        wrongPassword: {
-            state: false,
-            message: ''
-        }
-    });
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = getAuth();
-    const dispatch = useDispatch();
+
+    const notification = useSelector(store => store.notification.notification);
+    const data = useSelector(store => store.auth)
+    const [ inputs, setInputs ] = useState({
+        email: '',
+        password: ''
+    });
+
+    useEffect(() => {
+        dispatch(hideEmailError());
+        dispatch(hidePasswordError());
+        dispatch(hideNotification());
+    }, []);
 
     const standardRegister = async (e) => {
         e.preventDefault();
         if (inputs.email === '') {
-            setInputs({...inputs, wrongEmail: {...inputs.wrongEmail, state: true, message: 'Введите почту'}});
+            dispatch(showEmailError('Введите почту'));
             return
         } else if (inputs.password === '') {
-            setInputs({...inputs, wrongPassword: {...inputs.wrongPassword, state: true, message: 'Введите пароль'}});
+            dispatch(showPasswordError('Введите пароль'));
             return
         }
 
@@ -41,11 +46,11 @@ export const Register = () => {
             .catch((error) => {
                 console.log(error.code)
                 if (error.code === 'auth/invalid-email') {
-                    setInputs({...inputs, wrongEmail: {...inputs.wrongEmail, state: true, message: 'Некорректная почта'}});
+                    dispatch(showEmailError('Некорректная почта'));
                 } else if (error.code === 'auth/email-already-in-use') {
-                    setInputs({...inputs, wrongEmail: {...inputs.wrongEmail, state: true, message: 'Почта уже занята'}});
+                    dispatch(showEmailError('Почта уже занята'));
                 } else if (error.code === 'auth/weak-password') {
-                    setInputs({...inputs, wrongPassword: {...inputs.wrongPassword,state: true, message: 'Слабый пароль'}});
+                    dispatch(showPasswordError('Слабый пароль'));
                 } else {
                     dispatch(showNotification)
                 }
@@ -54,12 +59,14 @@ export const Register = () => {
 
     const changeLogin = (e) => {
         e.preventDefault();
-        setInputs({...inputs, wrongEmail: {...inputs.wrongEmail, state: false, message: ''}, email: e.target.value})
+        dispatch(hideEmailError());
+        setInputs({...inputs, email: e.target.value})
     };
 
     const changePassword = (e) => {
         e.preventDefault();
-        setInputs({...inputs, wrongPassword: {...inputs.wrongPassword, state: false, message: ''}, password: e.target.value})
+        dispatch(hidePasswordError());
+        setInputs({...inputs, password: e.target.value})
     };
 
     const toLoginPage = (e) => {
@@ -83,11 +90,11 @@ export const Register = () => {
                             <input
                                 type="text"
                                 className={`w-72 py-3 px-3 rounded bg-placeholder border-2
-                    focus:outline-none ${inputs.wrongEmail.state ? 'border-wrongInput' : 'border-transparent'}`}
+                    focus:outline-none ${data.wrongEmail.state ? 'border-wrongInput' : 'border-transparent'}`}
                                 placeholder='Введите почту'
                                 onChange={changeLogin}
                             />
-                            {inputs.wrongEmail.state && <p className="text-wrongInput text-base focus:font-normal">{inputs.wrongEmail.message}</p>}
+                            {data.wrongEmail.state && <p className="text-wrongInput text-base focus:font-normal">{data.wrongEmail.message}</p>}
                         </div>
 
                         <div className='flex flex-col gap-1'>
@@ -95,11 +102,11 @@ export const Register = () => {
                             <input
                                 type="password"
                                 className={`w-72 py-3 px-3 rounded bg-placeholder border-2
-                    focus:outline-none ${inputs.wrongPassword.state ? 'border-wrongInput' : 'border-transparent'}`}
+                    focus:outline-none ${data.wrongPassword.state ? 'border-wrongInput' : 'border-transparent'}`}
                                 placeholder='Введите пароль'
                                 onChange={changePassword}
                             />
-                            {inputs.wrongPassword.state && <p className="text-wrongInput text-base focus:font-normal">{inputs.wrongPassword.message}</p>}
+                            {data.wrongPassword.state && <p className="text-wrongInput text-base focus:font-normal">{data.wrongPassword.message}</p>}
                         </div>
 
                         <button

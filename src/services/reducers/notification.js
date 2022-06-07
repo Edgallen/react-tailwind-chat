@@ -4,7 +4,9 @@ import {
 } from "../actions/notification";
 
 const initialState = {
-  notification: false
+  isVisible: false,
+  message: '',
+  color: ''
 };
 
 export const notificationReducer = (state = initialState, action) => {
@@ -12,13 +14,16 @@ export const notificationReducer = (state = initialState, action) => {
     case SHOW_NOTIFICATION: {
       return {
         ...state, 
-        notification: true
+        isVisible: true,
+        message: action.payload.message,
+        color: action.payload.color
       }
     }
     case HIDE_NOTIFICATION: {
       return {
         ...state, 
-        notification: false
+        isVisible: false,
+        message: ''
       }
     }
     default: {

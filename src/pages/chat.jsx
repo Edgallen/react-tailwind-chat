@@ -1,22 +1,13 @@
 import React from 'react';
-import {getAuth, signOut} from "firebase/auth";
+import Navbar from '../components/NavBar/NavBar';
 
 export const Chat = () => {
-    const auth = getAuth();
-
-    const userSignOut = async (e) => {
-        e.preventDefault();
-        await signOut(auth);
-    }
-
     return (
-        <div>
-            <h1>Chat</h1>
-            <button
-                onClick={userSignOut}
-            >
-                Выйти
-            </button>
-        </div>
+        <>
+            <Navbar />
+            <main className='bg-background h-screen'>
+                <h1>Chat</h1>
+            </main>
+        </>
     );
 };

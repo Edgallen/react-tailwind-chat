@@ -1,4 +1,4 @@
-export const INITIALIZE_APP = 'initialize_app';
+export const INITIALIZE_APP = 'INITIALIZE_APP';
 
 export function initialize(app) {
   return {

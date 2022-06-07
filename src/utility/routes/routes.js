@@ -1,4 +1,9 @@
-import {Login, Chat, Register, ForgotPassword} from "../../pages";
+import {
+    Login,
+    Chat,
+    Register,
+    ForgotPassword
+} from "../../pages";
 
 export const publicRoutes = [
     {
@@ -10,7 +15,7 @@ export const publicRoutes = [
         Page: Register
     },
     {
-        path: '/forgotPassword',
+        path: '/forgot-password',
         Page: ForgotPassword
     }
 ];
