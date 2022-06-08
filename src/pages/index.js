@@ -1,11 +1,11 @@
-import {Chat} from './chat';
+import {HomePage} from './home';
 import {Login} from "./login";
 import {Register} from "./register";
 import {ForgotPassword} from "./forgotPassword";
 import { Resetpassword } from './resetPassword';
 
 export {
-    Chat,
+    HomePage,
     Login,
     Register,
     ForgotPassword,

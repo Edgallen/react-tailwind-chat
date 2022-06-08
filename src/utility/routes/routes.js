@@ -1,6 +1,6 @@
 import {
     Login,
-    Chat,
+    HomePage,
     Register,
     ForgotPassword
 } from "../../pages";
@@ -23,6 +23,6 @@ export const publicRoutes = [
 export const privateRoutes = [
     {
         path: '/chat',
-        Page: Chat
+        Page: HomePage
     }
 ];
