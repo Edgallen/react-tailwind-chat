@@ -2,7 +2,7 @@ import React from 'react';
 
 const ChatInput = () => {
   return (
-    <div className='flex justify-start  mx-12 mt-1'>
+    <div className='flex justify-start mx-36 mt-1'>
         <form className='flex flex-row items-stretch gap-3 justify-center'>
           <div className='flex flex-row w-[200vh] items-center relative text-primary gap-5 py-3 px-3 rounded bg-placeholder'>
             <i className="ri-user-smile-line text-2xl cursor-pointer hover:text-secondary duration-300"></i>

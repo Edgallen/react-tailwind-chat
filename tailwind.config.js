@@ -16,14 +16,14 @@ module.exports = {
       'white': '#ffffff',
 
       'card': '#302938',
-      'card-secondary': '#9089F0',
+      'card-secondary': '#9256DA',
 
       'background': '#332D3B',
-      'background-alt': '#383140',
+      'background-alt': '#9256DA',
       'placeholder': '#383140',
 
       'primary': '#CFC7D7',
-      'secondary': '#9089F0',
+      'secondary': '#9256DA',
       'inActive': '#747474',
 
       'notification': '#be123c',
@@ -32,7 +32,10 @@ module.exports = {
       'wrongInput': '#e11d48',
 
       'online-first': '#20BF55',
-      'online-second': '#01BAEF'
+      'online-second': '#01BAEF',
+
+      'message': '',
+      'messageBorder': '',
     }
   },
   plugins: [],
