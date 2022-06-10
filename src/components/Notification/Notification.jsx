@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import closeIcon from '../../images/close-icon.svg';
-import { hideNotification } from '../../services/actions/notification';
+import { hideNotification } from '../../services/actions/modal';
 
 const Notification = () => {
   const dispatch = useDispatch();
-  const data = useSelector(store => store.notification);
+  const data = useSelector(store => store.modal.notification);
   const [state, setState] = useState({
     render: false,
     closeComponent: false

@@ -18,7 +18,7 @@ const initialState = {
     message: ''
   },
 
-  forgotPassword: false
+  forgotPassword: false,
 }
 
 export const authReducer = (state = initialState, action) => {

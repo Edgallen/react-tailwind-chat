@@ -1,21 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import contactAvatar from '../../images/contactAvatar.png';
 import avatar from '../../images/avatar.png';
+import { useDispatch, useSelector } from 'react-redux';
+import Avatar from "boring-avatars";
+import { collection, getDocs, getFirestore, setDoc, doc } from "firebase/firestore";
+import {
+  getAuth
+} from "firebase/auth";
 
 const Contact = ({contact, index, click}) => {
   const active = contact.active ? 'bg-secondary text-white' : 'bg-placeholder'
+  const firstLetter = contact.name.toLocaleUpperCase()[0];
 
   return (
     <div className={
       `flex flex-row justify-between items-center py-4 mb-1 text-primary cursor-pointer
       ${contact.active ? 'bg-secondary text-white' : 'bg-placeholder'}`}
     >
-      <div className='flex flex-row items-center gap-4 ml-2'>
-        <img 
+      <div className='flex flex-row items-center gap-4 ml-2 z-1'>
+        {/* <img 
           className='w-14 h-14 rounded-full'
           src={contact.avatar} 
           alt="Avatar" 
-        />
+        /> */}
+        <div className='flex flex-col items-center justify-center relative'>
+          <Avatar
+            size={55}
+            name={contact.name}
+            variant="marble"
+            colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+          />
+          <span
+            className='text-white text-center text-2xl font-medium absolute'
+          >
+            {firstLetter}
+          </span>
+        </div>
 
         <div className='flex flex-col gap-1'>
           <h1
@@ -53,10 +73,14 @@ const Contact = ({contact, index, click}) => {
 };
 
 const Contacts = () => {
+  const uid = useSelector(store => store.auth.uid);
+  const dispatch = useDispatch();
+  const auth = getAuth();
+
   const [contacts, setContacts] = useState([
     {
       avatar: avatar,
-      name: 'Имя Пользователя',
+      name: 'Артур',
       message: 'Привет, как дела?',
       time: '11:00',
       unread: 400,
@@ -64,7 +88,7 @@ const Contacts = () => {
     },
     {
       avatar: contactAvatar,
-      name: 'Имя Пользователя',
+      name: 'Максим',
       message: 'Привет, как дела?',
       time: '11:00',
       unread: 400,
@@ -72,7 +96,7 @@ const Contacts = () => {
     },
     {
       avatar: contactAvatar,
-      name: 'Имя Пользователя',
+      name: 'Влад',
       message: 'Привет, как дела?',
       time: '11:00',
       unread: 400,
@@ -80,13 +104,24 @@ const Contacts = () => {
     },
     {
       avatar: contactAvatar,
-      name: 'Имя Пользователя',
+      name: 'Петр',
       message: 'Привет, как дела?',
       time: '11:00',
       unread: 400,
       active: false
     },
   ]);
+
+  const dataBase = getFirestore();
+  const userDataRef = collection(dataBase, "userData");
+
+  const getContacts = async () => {
+
+  }
+
+  useEffect(() => {
+
+  }, []);
 
   // const handleClick = (e, index) => {
   //   // contacts[index].active = true;
@@ -96,7 +131,7 @@ const Contacts = () => {
   // }
 
   return (
-    <section className='shadow-sectionShadow'>
+    <section className='shadow-sectionShadow relative'>
       {/* Заголовок */}
       <div className='flex flex-col px-8 pt-6 gap-4'>
         <h1 className='text-primary text-2xl font-semibold'>Чаты</h1>
@@ -122,6 +157,13 @@ const Contacts = () => {
             // onClick={handleClick(index)}
           />
         ))}
+      </div>
+
+      {/* Добавить контакт */}
+      <div className='absolute right-5 bottom-10 text-white bg-secondary rounded-full px-4 py-3
+        hover:bg-white hover:text-secondary duration-300 cursor-pointer'
+      >
+      <i className="ri-add-fill text-3xl"></i>
       </div>
     </section>
   );

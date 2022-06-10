@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import ChatInput from '../ChatInput/ChatInput';
 import ChatTitle from '../ChatTitle/ChatTitle';
-import { collection, getDocs, getFirestore, setDoc, doc, query } from "firebase/firestore";
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useSelector } from 'react-redux';
 
 const Message = ({user, type, text}) => {
   const style = user ?
@@ -11,13 +10,15 @@ const Message = ({user, type, text}) => {
   'flex flex-start';
 
   return (
-    <div className={`bg-placeholder text-primary w-max rounded my-2 py-3 px-3 ${style}`}>
+    <div className={`bg-placeholder text-[#F2F2F2] w-max rounded my-2 py-3 px-3 ${style}`}>
       <p>{text}</p>
     </div>
   )
 }
 
 const Chat = () => {
+  const userAuth = useSelector(store => store.auth);
+
   const [messages, setMessages] = useState([
     {
       user: true,
@@ -45,38 +46,6 @@ const Chat = () => {
       text: 'Привет, как дела?'
     },
   ]);
-
-  const dataBase = getFirestore();
-  const userDataRef = collection(dataBase, "userData");
-
-  const [data, loading] = useCollectionData(
-    query(userDataRef)
-  );
-
-  const getCollection = async () => {
-    await setDoc(doc(userDataRef, "user1"), {
-      contacts: [
-          {
-            avatar: 'Аватар',
-            displayName: 'Имя Пользователя',
-            messages: [
-              {
-                displayName: 'Имя Пользователя',
-                type: 'text',
-                text: 'Привет, как дела?'
-              }
-            ]
-          }
-      ]
-    });
-
-    console.log(userDataRef);
-    console.log(data);
-  }
-
-  useEffect(() => {
-    getCollection();
-  }, []);
 
   return (
     <section className='w-4/5'>

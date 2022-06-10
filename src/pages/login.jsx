@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import facebookIcon from '../images/facebook-icon.svg';
 import googleIcon from '../images/google-icon.svg';
 import {
@@ -17,25 +17,39 @@ import {
   hideEmailError,
   hidePasswordError
 } from '../services/actions/auth';
-import { showNotification, hideNotification } from '../services/actions/notification';
+import { showNotification } from '../services/actions/modal';
+import { collection, getDocs, getFirestore, setDoc, doc } from "firebase/firestore";
 
 export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth();
 
-  const data = useSelector(store => store.auth)
-  const notification = useSelector(store => store.notification);
+  const data = useSelector(store => store.auth);
+  const notification = useSelector(store => store.modal.notification);
   const [ inputs, setInputs ] = useState({
     email: '',
     password: ''
   });
 
-  useEffect(() => {
-    dispatch(hideEmailError());
-    dispatch(hidePasswordError()); 
-    dispatch(hideNotification());
-  }, []);
+  const dataBase = getFirestore();
+  const userDataRef = collection(dataBase, "userData");
+
+  const findUser = async (user) => {
+    const querySnapshot = await getDocs(collection(dataBase, "userData"));
+
+    querySnapshot.forEach((doc) => {
+      if (doc.id === user.uid) {
+        return true
+      }
+    });
+  }
+
+  const setUser = async (user) => {
+    await setDoc(doc(userDataRef, user.uid), {
+      userContacts: []
+    });
+  };
 
   const standardLogin = async (e) => {
     e.preventDefault();
@@ -48,6 +62,11 @@ export const Login = () => {
     }
 
     await signInWithEmailAndPassword(auth, inputs.email, inputs.password)
+        .then((result) => {
+          if (findUser(result.user)) {
+            setUser(result.user);
+          }
+        })
         .catch((error) => {
           console.log(error.code)
           if (error.code === 'auth/wrong-password') {
@@ -64,14 +83,28 @@ export const Login = () => {
 
   const googleLogin = async () => {
     const provider = new GoogleAuthProvider();
-    const user = await signInWithPopup(auth, provider);
-    console.log(user);
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        if (findUser(result.user)) {
+          setUser(result.user);
+        }
+      })
+      .catch((err) => {
+        dispatch(showNotification({message: 'Произошла ошибка', color: 'bg-notification'}));
+      })
   }
 
   const facebookLogin = async () => {
     const provider = new FacebookAuthProvider();
-    const user = await signInWithPopup(auth, provider);
-    console.log(user);
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        if (findUser(result.user)) {
+          setUser(result.user);
+        }
+      })
+      .catch((err) => {
+        dispatch(showNotification({message: 'Произошла ошибка', color: 'bg-notification'}));
+      })
   }
 
   const changeEmail = (e) => {

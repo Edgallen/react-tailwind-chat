@@ -1,9 +1,7 @@
-// import { getDatabase, ref, child, get } from "firebase/database";
-
 export const GET_CONTACTS_REQUEST = 'GET_CONTACTS_REQUEST';
 export const GET_CONTACTS_SUCCESS = 'GET_CONTACTS_SUCCESS';
 
-// const dbRef = ref(getDatabase());
+export const SET_UID = 'SET_UID';
 
 export const contactsRequest = () => {
   return {
@@ -18,10 +16,9 @@ export const contactsSuccess = (data) => {
   }
 }
 
-const getContacts = () => {
-  return (dispatch) => {
-    dispatch(contactsRequest())
-
-
-  }
-}
+export const setUid = (uid) => {
+  return {
+    type: SET_UID,
+    payload: uid
+  };
+};

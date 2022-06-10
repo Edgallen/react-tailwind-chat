@@ -12,25 +12,19 @@ import {
     hideEmailError,
     hidePasswordError
 } from '../services/actions/auth';
-import { showNotification, hideNotification } from '../services/actions/notification';
+import { showNotification } from '../services/actions/modal';
 
 export const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = getAuth();
 
-    const notification = useSelector(store => store.notification.notification);
+    const notification = useSelector(store => store.notification.modal.notification);
     const data = useSelector(store => store.auth)
     const [ inputs, setInputs ] = useState({
         email: '',
         password: ''
     });
-
-    useEffect(() => {
-        dispatch(hideEmailError());
-        dispatch(hidePasswordError());
-        dispatch(hideNotification());
-    }, []);
 
     const standardRegister = async (e) => {
         e.preventDefault();

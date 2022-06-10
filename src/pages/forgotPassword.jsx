@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import Notification from '../components/Notification/Notification';
-import { showNotification } from '../services/actions/notification';
+import { showNotification } from '../services/actions/modal';
 import { hideEmailError, showEmailError } from '../services/actions/auth';
 
 export const ForgotPassword = () => {
@@ -11,7 +11,7 @@ export const ForgotPassword = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const notification = useSelector(store => store.notification);
+    const notification = useSelector(store => store.modal.notification);
     const data = useSelector(store => store.auth);
     const [ inputs, setInputs ] = useState({
         email: ''
