@@ -33,7 +33,8 @@ export const Login = () => {
   });
 
   const dataBase = getFirestore();
-  const userDataRef = collection(dataBase, "userData");
+  // const userDataRef = collection(dataBase, "userData");
+  const userDataRef = collection(dataBase, "userDataTest");
 
   const findUser = async (user) => {
     const querySnapshot = await getDocs(collection(dataBase, "userData"));
@@ -47,7 +48,7 @@ export const Login = () => {
 
   const setUser = async (user) => {
     await setDoc(doc(userDataRef, user.uid), {
-      userContacts: []
+      displayName: user.displayName
     });
   };
 

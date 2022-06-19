@@ -3,7 +3,7 @@ import contactAvatar from '../../images/contactAvatar.png';
 import avatar from '../../images/avatar.png';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from "boring-avatars";
-import { collection, getDocs, getFirestore, setDoc, doc } from "firebase/firestore";
+import { collection, getDocs, addDoc, getFirestore, setDoc, doc } from "firebase/firestore";
 import {
   getAuth
 } from "firebase/auth";
@@ -73,7 +73,7 @@ const Contact = ({contact, index, click}) => {
 };
 
 const Contacts = () => {
-  const uid = useSelector(store => store.auth.uid);
+  const uid = useSelector(store => store.auth.userData.userUid);
   const dispatch = useDispatch();
   const auth = getAuth();
 
@@ -115,13 +115,26 @@ const Contacts = () => {
   const dataBase = getFirestore();
   const userDataRef = collection(dataBase, "userData");
 
-  const getContacts = async () => {
+  let userId = 0;
+
+  const getUserId = () => {
 
   }
 
-  useEffect(() => {
+  const getContacts = async () => {
+    console.log(uid);
 
-  }, []);
+    const docData = {
+     displayName: '',
+    };
+    await setDoc(doc(dataBase, "userData", uid), docData);
+  }
+
+  useEffect(() => {
+    if (uid !== '') {
+      getContacts();
+    }
+  }, [uid]);
 
   // const handleClick = (e, index) => {
   //   // contacts[index].active = true;

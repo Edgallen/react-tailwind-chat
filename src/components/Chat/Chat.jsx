@@ -48,10 +48,10 @@ const Chat = () => {
   ]);
 
   return (
-    <section className='w-4/5'>
+    <section className='w-4/5 h-[100vh]'>
       <ChatTitle />
 
-      <div className='flex flex-col-reverse pb-8 mx-36 h-5/6 relative'>
+      <div className='flex flex-col-reverse pb-8 mx-36 h-[75vh] relative'>
         {messages.map((message, index) => (
           <Message
             key={index} // Исправить !!

@@ -4,7 +4,9 @@ import {
   SHOW_PASSWORD_ERROR,
   HIDE_PASSWORD_ERROR,
   FORGOT_PASSWORD,
-  RESTORED_PASSWORD
+  RESTORED_PASSWORD,
+  GET_USER_UID,
+  SET_USER_UID
 } from "../actions/auth";
 
 const initialState = {
@@ -19,6 +21,11 @@ const initialState = {
   },
 
   forgotPassword: false,
+
+  userData: {
+    userUid: '',
+    uidIsLoading: false
+  }
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -73,6 +80,25 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         forgotPassword: false
+      };
+    }
+    case GET_USER_UID:{
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          uidIsLoading: true
+        }
+      };
+    }
+    case SET_USER_UID:{
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          userUid: action.payload,
+          uidIsLoading: false
+        }
       };
     }
     default: {
