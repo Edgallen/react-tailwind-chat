@@ -19,7 +19,7 @@ export const Register = () => {
     const navigate = useNavigate();
     const auth = getAuth();
 
-    const notification = useSelector(store => store.notification.modal.notification);
+    const notification = useSelector(store => store.modal.notification);
     const data = useSelector(store => store.auth)
     const [ inputs, setInputs ] = useState({
         email: '',
@@ -95,6 +95,7 @@ export const Register = () => {
                             <h2 className='font-medium'>Пароль</h2>
                             <input
                                 type="password"
+                                minlength="5"
                                 className={`w-72 py-3 px-3 rounded bg-placeholder border-2
                     focus:outline-none ${data.wrongPassword.state ? 'border-wrongInput' : 'border-transparent'}`}
                                 placeholder='Введите пароль'
@@ -120,7 +121,7 @@ export const Register = () => {
                     > Войти</span>
                 </p>
             </section>
-            {notification && <Notification />}
+            {/* {notification && <Notification />} */}
         </>
     );
 };

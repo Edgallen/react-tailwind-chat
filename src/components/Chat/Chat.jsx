@@ -48,7 +48,7 @@ const Chat = () => {
   ]);
 
   return (
-    <section className='w-4/5 h-[100vh]'>
+    <section className='w-4/5 h-[100vh] relative'>
       <ChatTitle />
 
       <div className='flex flex-col-reverse pb-8 mx-36 h-[75vh] relative'>

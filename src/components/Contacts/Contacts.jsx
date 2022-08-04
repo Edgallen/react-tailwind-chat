@@ -76,6 +76,7 @@ const Contacts = () => {
   const uid = useSelector(store => store.auth.userData.userUid);
   const dispatch = useDispatch();
   const auth = getAuth();
+  const user = auth.currentUser;
 
   const [contacts, setContacts] = useState([
     {
@@ -125,7 +126,7 @@ const Contacts = () => {
     console.log(uid);
 
     const docData = {
-     displayName: '',
+     displayName: user.displayName,
     };
     await setDoc(doc(dataBase, "userData", uid), docData);
   }

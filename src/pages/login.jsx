@@ -47,8 +47,9 @@ export const Login = () => {
   }
 
   const setUser = async (user) => {
+    console.log(user.displayName);
     await setDoc(doc(userDataRef, user.uid), {
-      displayName: user.displayName
+      displayName: user.displayName,
     });
   };
 
